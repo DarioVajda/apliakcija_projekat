@@ -44,3 +44,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Ovo su neki fajlovi koji mislim da mi ne trebaju
+.dart_tool/
+.idea/
