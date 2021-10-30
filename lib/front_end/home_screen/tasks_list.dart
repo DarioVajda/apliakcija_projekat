@@ -31,11 +31,11 @@ class _RefreshableHomeScreenTaskListState extends State<RefreshableHomeScreenTas
   @override
   void initState() {
     super.initState();
-    tasks = HomeScreenTaskListBE.getHomeScreenList(widget.filter);
   }
 
   @override
   Widget build(BuildContext context) {
+    tasks = HomeScreenTaskListBE.getHomeScreenList(widget.filter);
     return CustomRefreshIndicator(
         child: HomeScreenTaskList(
           tasks: tasks,
@@ -44,31 +44,31 @@ class _RefreshableHomeScreenTaskListState extends State<RefreshableHomeScreenTas
         ),
         onRefresh: () => onRefresh(),
         builder: (
-            BuildContext context,
-            Widget child,
-            IndicatorController controller
-            ) {
+          BuildContext context,
+          Widget child,
+          IndicatorController controller
+        ) {
           return AnimatedBuilder(
-              animation: controller,
-              builder: (BuildContext context, _) {
-                return Stack(
-                  alignment: Alignment.topCenter,
-                  children: <Widget>[
-                    Transform.translate(
-                        offset: const Offset(0, 30),
-                        child: CircularProgressIndicator(
-                          value: !controller.isLoading
-                              ? controller.value.clamp(0.0, 1.0)
-                              : null,
-                        )
-                    ),
-                    Transform.translate(
-                      offset: Offset(0, 100.0 * controller.value),
-                      child: child,
-                    ),
-                  ],
-                );
-              }
+            animation: controller,
+            builder: (BuildContext context, _) {
+              return Stack(
+                alignment: Alignment.topCenter,
+                children: <Widget>[
+                  Transform.translate(
+                      offset: const Offset(0, 30),
+                      child: CircularProgressIndicator(
+                        value: !controller.isLoading
+                            ? controller.value.clamp(0.0, 1.0)
+                            : null,
+                      )
+                  ),
+                  Transform.translate(
+                    offset: Offset(0, 100.0 * controller.value),
+                    child: child,
+                  ),
+                ],
+              );
+            }
           );
         }
     );

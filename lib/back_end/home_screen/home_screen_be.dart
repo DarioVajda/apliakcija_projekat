@@ -37,13 +37,20 @@ class HomeScreenTaskListBE {
     ];
     List<TaskData> list = [];
     Random random = Random();
+    String f;
     for(int i = 0; i < 10; i++) {
+      if(filter == null) {
+        f = 'topic' + random.nextInt(10).toString();
+      }
+      else {
+        f = filter;
+      }
       list.add(
         TaskData(
             username: 'username' + random.nextInt(10).toString(),
             profilePicture: Icons.person,
             title: 'Short title',
-            topic: (filter != null) ? filter: ('topic' + random.nextInt(10).toString()),
+            topic: f,
             price: 9.99,
             taskType: 'Short Homework',
             dueDate: DateTime(2022, 2, random.nextInt(29)),

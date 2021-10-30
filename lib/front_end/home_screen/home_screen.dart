@@ -16,12 +16,18 @@ class _HomeScreenState extends State<HomeScreen> {
   List<String> filters = HomeScreenTaskListBE.getHomeScreenFilters();
   String? filter;
 
-  void _changeFilter(String newFilter) => setState(() => filter = newFilter);
+  void _changeFilter(String? newFilter) {
+    if(filter != newFilter) {
+      setState(() {
+        filter = newFilter;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomeAppBar.appBar(_changeFilter, filters),
+      appBar: HomeAppBar.appBar(_changeFilter, filters, filter),
       body: HomeScreenBody(filter: filter)
     );
   }
@@ -47,21 +53,45 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
 ///_________________________________________________________________________
 /// Bottom part of the appBar for the HomeScreen widget
 ///
-/// TODO IZ NEKOG NEPOZNATOG RAZLOGA NISTA NE MOGU DA VIDIM KOD BOTTOM DELA ZA NAV BAR KAD JE OVAKAV KOD, A KAD STAVIM DA SE POJAVI SAMO JEDAN TEKST ONDA TO RADI KAKO TREBA
+/// TODO - IZ NEKOG NEPOZNATOG RAZLOGA NISTA NE MOGU DA VIDIM KOD BOTTOM DELA ZA NAV BAR KAD JE OVAKAV KOD, A KAD STAVIM DA SE POJAVI SAMO JEDAN TEKST ONDA TO RADI KAKO TREBA
 class HomeAppBar {
-  static PreferredSizeWidget appBar(Function(String) changeFilter, List<String> filters) {
+  /// Funkcija koja pravi appBar za home screen
+  static PreferredSizeWidget appBar(Function(String?) changeFilter, List<String> filters, String? currFilter) {
+    List<Widget> rowItems = [
+      Padding(
+        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+        child: IconButton(
+          onPressed: () => changeFilter(null),
+          icon: Text('X', style: TextStyle(fontSize: (currFilter == null)?15:12))
+        )
+      )
+    ];
+    rowItems.addAll(List.generate(
+      filters.length,
+          (index) {
+        int textSize = 12;
+        if(filters[index] == currFilter) {
+          textSize = 16;
+        }
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+          child: IconButton(
+            onPressed: () => changeFilter(filters[index]),
+            icon: Text(filters[index], style: TextStyle(fontSize: textSize.toDouble()))
+          ),
+        );
+      }
+    ));
+
     return AppBar(
       title: const Text('Home Screen'),
       bottom: PreferredSize(
-        child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: filters.length,
-            itemBuilder: (context, index) {
-              return TextButton(
-                  onPressed: () => changeFilter(filters[index]),
-                  child: Text(filters[index])
-              );
-            }
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: rowItems,
+          )
         ),
         preferredSize: const Size.fromHeight(50)
       )
