@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+/// TODO - OVAJ CEO PROGRAM TREBA DA SE PROMENI KAD BUDEM RADIO BACK-END
+
 /// Task data class
 class TaskData {
   String username;
