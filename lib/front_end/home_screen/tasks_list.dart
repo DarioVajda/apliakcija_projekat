@@ -128,7 +128,7 @@ class _HomeScreenTaskListState extends State<HomeScreenTaskList> {
           lastElem = Column(
             children: const [
               SizedBox(height: 15),
-              CircularProgressIndicator(color: Colors.grey),
+              CircularProgressIndicator(),
               SizedBox(height: 15)
             ],
           );

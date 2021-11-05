@@ -2,6 +2,8 @@ import 'package:aplikacija_projekat/front_end/screens_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:aplikacija_projekat/back_end/home_screen/home_screen_be.dart';
 import 'package:aplikacija_projekat/front_end/universal_widgets/popup_options.dart';
+import 'package:aplikacija_projekat/back_end/universal_functions/follow.dart';
+import 'package:aplikacija_projekat/front_end/home_screen/task_detail_screen.dart';
 
 ///__________________________________________________________________________________
 /// Single task widget
@@ -13,32 +15,35 @@ class SingleTask extends StatelessWidget {
   void _initPopupButtons() {
     popupButtons.clear();
     popupButtons.addAll([
-      PopupButton(func: () => print('followed ${data.username}'), buttonName: 'follow @${data.username}'),
+      PopupButton(
+          func: () => follow(followedPerson: data.username, follower: '@your_username'),
+          buttonName: 'follow @${data.username}'
+      ),
       PopupButton(func: () => print('saved post for later'), buttonName: 'save'),
       PopupButton(func: () => print('shared'), buttonName: 'share'),
-    ]); /// kasnije cu trebati da pozovem sve redovne funkcije umesto da prosledjujem () => print(...)
-  } /// inicijalizuje se lista popupButtons
+    ]); // kasnije cu trebati da pozovem sve redovne funkcije umesto da prosledjujem () => print(...)
+  } // inicijalizuje se lista popupButtons
 
-  /// funkcija koja stvara popup opcije - ovo cu trebati da promenim
+  // funkcija koja stvara popup opcije - ovo cu trebati da promenim
   void _popUpPostOptions(BuildContext context) {
     _initPopupButtons();
     showPopupOptions(context, popupButtons);
   }
 
-  /// funkcija koja prikazuje neki string full screen
-  /// ovo ce trebati da se promeni kad budem menjao te screen-ove
-  void _fullScreenPrimer(String s) {
-    NavigationFunctions.pushFullScreen(
+  // funkcija koja prikazuje neki string full screen
+  // ovo ce trebati da se promeni kad budem menjao te screen-ove
+  void _fullScreenPrimer(String s, BuildContext context) {
+    NavigationFunctions.pushScreen(
       Scaffold(
         appBar: AppBar(title: Text(s)),
         body: Center(
           child: Text(s)
         ),
-      )
+      ),
+      context
     );
   }
 
-  /// Konstruktor
   SingleTask({Key? key, required this.data}) : super(key: key);
 
   @override
@@ -49,7 +54,9 @@ class SingleTask extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           // otvara se profil osobe
-          _fullScreenPrimer('Detail Screen');
+          // _fullScreenPrimer('Detail Screen');
+          NavigationFunctions.pushFullScreen(TaskDetailScreen(data: data));
+          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => TaskDetailScreen(data: data)));
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -62,7 +69,7 @@ class SingleTask extends StatelessWidget {
                   GestureDetector(
                       onTap: () {
                         // otvara se detail screen ovog zadatka
-                        _fullScreenPrimer('Profile');
+                        _fullScreenPrimer('Profile', context);
                       },
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

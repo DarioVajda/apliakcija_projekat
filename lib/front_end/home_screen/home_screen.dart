@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomeAppBar.appBar(_changeFilter, filters, filter),
+      appBar: HomeAppBar.appBar(_changeFilter, filters, filter, context),
       body: HomeScreenBody(filter: filter)
     );
   }
@@ -52,11 +52,9 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
 }
 ///_________________________________________________________________________
 /// Bottom part of the appBar for the HomeScreen widget
-///
-/// TODO - IZ NEKOG NEPOZNATOG RAZLOGA NISTA NE MOGU DA VIDIM KOD BOTTOM DELA ZA NAV BAR KAD JE OVAKAV KOD, A KAD STAVIM DA SE POJAVI SAMO JEDAN TEKST ONDA TO RADI KAKO TREBA
 class HomeAppBar {
   /// Funkcija koja pravi appBar za home screen
-  static PreferredSizeWidget appBar(Function(String?) changeFilter, List<String> filters, String? currFilter) {
+  static PreferredSizeWidget appBar(Function(String?) changeFilter, List<String> filters, String? currFilter, BuildContext context) {
     List<Widget> rowItems = [
       Padding(
         padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),

@@ -6,8 +6,9 @@ import 'dart:math';
 /// Task data class
 class TaskData {
   String username;
-  IconData profilePicture;
+  IconData profilePicture; // ovo je mozda visak podatak jer ce ikona moci da se dobije iz profila osobe
   String title;
+  String description;
   String topic;
   ImageProvider? image;
   double price;
@@ -17,6 +18,7 @@ class TaskData {
   TaskData({
     required this.username,
     required this.title,
+    this.description = '',
     required this.dueDate,
     required this.profilePicture,
     required this.topic,
@@ -31,6 +33,8 @@ class HomeScreenTaskListBE {
   // trebam da pretvorim ovu funkciju u async i da je tako isprobam
 
   static List<TaskData> getHomeScreenList(String? filter) {
+    /// region Inicijalizacija
+    String description = 'Programming is the process of creating a set of instructions that tell a computer how to perform a task. Programming can be done using a variety of computer programming languages, such as JavaScript, Python, and C++. Computer programming is the process of designing and building an executable computer program to accomplish a specific computing result or to perform a specific task.';
     List<String> images = [
       'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Gutenberg_Bible%2C_Lenox_Copy%2C_New_York_Public_Library%2C_2009._Pic_01.jpg/894px-Gutenberg_Bible%2C_Lenox_Copy%2C_New_York_Public_Library%2C_2009._Pic_01.jpg',
       'https://images.prismic.io/frameworkmarketplace/cca31de3-3b75-4932-af96-7646b7eba6c7__DSC3630-Edit-cropped.jpg?auto=compress,format',
@@ -39,6 +43,7 @@ class HomeScreenTaskListBE {
     ];
     List<TaskData> list = [];
     Random random = Random();
+    /// endregion
     String f;
     for(int i = 0; i < 10; i++) {
       if(filter == null) {
@@ -49,14 +54,15 @@ class HomeScreenTaskListBE {
       }
       list.add(
         TaskData(
-            username: 'username' + random.nextInt(10).toString(),
-            profilePicture: Icons.person,
-            title: 'Short title',
-            topic: f,
-            price: 9.99,
-            taskType: 'Short Homework',
-            dueDate: DateTime(2022, 2, random.nextInt(29)),
-            image: NetworkImage(images[random.nextInt(images.length)])
+          username: 'username' + random.nextInt(10).toString(),
+          profilePicture: Icons.person,
+          title: 'Short title',
+          description: description,
+          topic: f,
+          price: 9.99,
+          taskType: 'Short Homework',
+          dueDate: DateTime(2022, 2, random.nextInt(29)),
+          image: NetworkImage(images[random.nextInt(images.length)])
         )
       );
     }

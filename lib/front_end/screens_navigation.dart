@@ -5,8 +5,10 @@ import 'home_screen/home_screen.dart';
 /// Screen Pushing Funkcions:
 class NavigationFunctions {
   static void Function(Widget screen) pushFullScreen = (screen) {};
+  static void Function(Widget screen, BuildContext context) pushScreen = (screen, context) {};
   static void Function() popFullScreen = () {};
   static BuildContext? globalBuildContext;
+  static List<Function> popFunctionStack = [];
 }
 ///________________________________________________________________________________________________
 /// Screens Navigation:
@@ -73,9 +75,11 @@ class _ScreensNavigationState extends State<ScreensNavigation> {
     ];
     NavigationFunctions.pushFullScreen = (screen) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
+      NavigationFunctions.popFunctionStack.add(() => Navigator.pop(context));
     };
-    NavigationFunctions.popFullScreen = () {
-      Navigator.pop(context);
+    NavigationFunctions.pushScreen = (screen, localContext) {
+      Navigator.push(localContext, MaterialPageRoute(builder: (contex) => screen));
+      NavigationFunctions.popFunctionStack.add(() => Navigator.pop(localContext));
     };
     NavigationFunctions.globalBuildContext = context;
   } // Inicijalizuju se navBarItems i screens

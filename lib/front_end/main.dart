@@ -20,21 +20,36 @@ class App extends StatelessWidget {
 class GlobalNavigation extends StatelessWidget {
   const GlobalNavigation({Key? key}) : super(key: key);
 
+  Future<bool> _popFunctions() async {
+    if(NavigationFunctions.popFunctionStack.isEmpty) {
+      return true;
+    }
+    else {
+      int len = NavigationFunctions.popFunctionStack.length;
+      NavigationFunctions.popFunctionStack[len - 1].call();
+      NavigationFunctions.popFunctionStack.removeAt(len - 1);
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      initialRoute: '/',
-      onGenerateRoute: (RouteSettings settings) {
-        WidgetBuilder builder;
-        switch(settings.name) {
-          case '/':
-            builder = (BuildContext context) => const ScreensNavigation();
-            break;
-          default:
-            builder = (BuildContext context) => Container();
-        }
-        return MaterialPageRoute<void>(builder: builder, settings: settings);
-      },
+    return WillPopScope(
+      onWillPop: _popFunctions,
+      child: Navigator(
+        initialRoute: '/',
+        onGenerateRoute: (RouteSettings settings) {
+          WidgetBuilder builder;
+          switch(settings.name) {
+            case '/':
+              builder = (BuildContext context) => const ScreensNavigation();
+              break;
+            default:
+              builder = (BuildContext context) => Container();
+          }
+          return MaterialPageRoute<void>(builder: builder, settings: settings);
+        },
+      ),
     );
   }
 }

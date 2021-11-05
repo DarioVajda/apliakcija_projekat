@@ -1,6 +1,3 @@
-/// TODO - ovo je fajl u kojem ce se nalaziti funkcija koja prikazuje pop-up opcije
-/// funckija treba da ima argument listu funkcija i listu stringova koji ce se prikazati
-/// takodje mozda mogu da dodam nesto kao "leading widget" da se nalazi na godnjem delu toga sto se prikaze
 import 'package:flutter/material.dart';
 
 class PopupButton {
