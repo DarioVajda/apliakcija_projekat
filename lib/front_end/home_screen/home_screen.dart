@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
         filter = newFilter;
       });
     }
-  }
+  } // funkcija koja se poziva za menjanje filtera
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +47,7 @@ class HomeScreenBody extends StatefulWidget {
 class _HomeScreenBodyState extends State<HomeScreenBody> {
   @override
   Widget build(BuildContext context) {
+    // stvara home screen na osnovu izabranog filtera (koji moze da bude null)
     return RefreshableHomeScreenTaskList(filter: widget.filter);
   }
 }
@@ -61,13 +62,13 @@ class HomeAppBar {
         child: IconButton(
           onPressed: () => changeFilter(null),
           icon: Text('X', style: TextStyle(fontSize: (currFilter == null)?15:12))
-        )
+        ) // dugme koje sklanja filtere, mozda cu ga kasnije menjati
       )
-    ];
+    ]; // inicijalizacija za elemente
     rowItems.addAll(List.generate(
       filters.length,
           (index) {
-        int textSize = 12;
+        int textSize = 12; // ovo koristim da bi se mogao razlikovati selektovani filter od ostalih, mozda ce se kasnije to drugacije raditi
         if(filters[index] == currFilter) {
           textSize = 16;
         }
@@ -79,7 +80,7 @@ class HomeAppBar {
           ),
         );
       }
-    ));
+    )); // generise se lista dugmadi za filtere koji se dobijaju iz back-end-a
 
     return AppBar(
       title: const Text('Home Screen'),

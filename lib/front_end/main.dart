@@ -11,7 +11,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.light(),
+      theme: ThemeData.light(), // tema aplikacije
       home: const SafeArea(child: GlobalNavigation())
     );
   }
@@ -20,20 +20,22 @@ class App extends StatelessWidget {
 class GlobalNavigation extends StatelessWidget {
   const GlobalNavigation({Key? key}) : super(key: key);
 
+  /// funkcija za WillPopScope
   Future<bool> _popFunctions() async {
     if(NavigationFunctions.popFunctionStack.isEmpty) {
       return true;
-    }
+    } /// ako je stack prazan onda je vreme za napustanje aplikacije
     else {
       int len = NavigationFunctions.popFunctionStack.length;
       NavigationFunctions.popFunctionStack[len - 1].call();
       NavigationFunctions.popFunctionStack.removeAt(len - 1);
       return false;
-    }
+    } /// ako ima funkcija u stack-u onda jos moze da se ide unazad
   }
 
   @override
   Widget build(BuildContext context) {
+    /// detektuje system back button i poziva odgovarajuce funkcije za to:
     return WillPopScope(
       onWillPop: _popFunctions,
       child: Navigator(
@@ -49,7 +51,7 @@ class GlobalNavigation extends StatelessWidget {
           }
           return MaterialPageRoute<void>(builder: builder, settings: settings);
         },
-      ),
+      ), /// ovo je navigator koji se koristi za full screen prozore
     );
   }
 }

@@ -4,6 +4,8 @@ import 'dart:math';
 /// TODO - OVAJ CEO PROGRAM TREBA DA SE PROMENI KAD BUDEM RADIO BACK-END
 
 /// Task data class
+// ovo je klasa koja sadrzi sve bitne podatke o jednom zadatku
+// koristi se u front-end-u i po ovome ce da se modeluje skladistenje podataka u bazi (valjda)
 class TaskData {
   String username;
   IconData profilePicture; // ovo je mozda visak podatak jer ce ikona moci da se dobije iz profila osobe
@@ -30,7 +32,8 @@ class TaskData {
 ///_____________________________________________________
 
 class HomeScreenTaskListBE {
-  // trebam da pretvorim ovu funkciju u async i da je tako isprobam
+  // trebam da pretvorim ove funkcije u async i da je tako isprobam
+  // i da dodam default vrednosti widget-ovima koju imaju pre nego sto se izvrsi ovo
 
   static List<TaskData> getHomeScreenList(String? filter) {
     /// region Inicijalizacija
@@ -67,7 +70,7 @@ class HomeScreenTaskListBE {
       );
     }
     return list;
-  }
+  } // trenutno ova funkcija generise random vrednosti za listu zadataka
 
   static List<String> getHomeScreenFilters() {
     List<String> filters = [];
@@ -75,5 +78,5 @@ class HomeScreenTaskListBE {
       filters.add('topic' + i.toString());
     }
     return filters;
-  }
+  } // generise topic-ove
 }

@@ -5,9 +5,9 @@ class PopupButton {
   String buttonName;
 
   PopupButton({required this.func, required this.buttonName});
-}
+} // klasa koja se koristi kao ono sto se prosledjuje funkciji showPopupButtons
 
-/// funkcija koja stvara po TextButton za svaki element u list buttons
+/// funkcija koja stvara po TextButton za svaki element u listi buttons
 void showPopupOptions(BuildContext context, List<PopupButton> buttons) {
   showModalBottomSheet(
     context: context,

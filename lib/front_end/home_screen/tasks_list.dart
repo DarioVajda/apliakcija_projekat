@@ -5,6 +5,8 @@ import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 
 
 /// Refreshable list
+// koristim biblioteku "custom_refresh_indicator"
+// mada mozda bih voleo jednom da napravim svoje za to, ali za sad je i ovo super
 class RefreshableHomeScreenTaskList extends StatefulWidget {
 
   final String? filter;
@@ -18,7 +20,7 @@ class RefreshableHomeScreenTaskList extends StatefulWidget {
 class _RefreshableHomeScreenTaskListState extends State<RefreshableHomeScreenTaskList> {
 
   ScrollController scrollController = ScrollController();
-  List<TaskData> tasks = [];
+  List<TaskData> tasks = []; // lista zadataka koja se prikazuje
 
   Future<void> onRefresh() async {
     await Future.delayed(const Duration(seconds: 3), () {
@@ -26,12 +28,7 @@ class _RefreshableHomeScreenTaskListState extends State<RefreshableHomeScreenTas
         tasks = HomeScreenTaskListBE.getHomeScreenList(widget.filter);
       });
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  } // funkcija koja se poziva kad se refreshuje
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +96,7 @@ class _HomeScreenTaskListState extends State<HomeScreenTaskList> {
   ScrollController scrollController = ScrollController();
 
   scrollListener(ScrollController sc) {
+    // TODO - ovo cu morati da promenim jer ovo uopste nije optimalan nacin za ucitavanje novih podataka
     if(sc.position.maxScrollExtent == sc.offset) {
       Future.delayed(const Duration(seconds: 3), () {
         setState(() {
@@ -106,13 +104,13 @@ class _HomeScreenTaskListState extends State<HomeScreenTaskList> {
         });
       });
     }
-  }
+  } // funkcija koja ucitava nove zadatke
 
   @override
   void initState() {
     super.initState();
     scrollController = widget.scrollController;
-    scrollController.addListener(() => scrollListener(scrollController));
+    scrollController.addListener(() => scrollListener(scrollController)); // dodaje se listener
   }
 
   @override
@@ -150,7 +148,7 @@ class _HomeScreenTaskListState extends State<HomeScreenTaskList> {
             lastElem
           ],
         );
-      },
+      }, // funkcija za bildovanje elemenata u listi
     );
   }
 }

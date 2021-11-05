@@ -9,7 +9,7 @@ class NavigationFunctions {
   static void Function() popFullScreen = () {};
   static BuildContext? globalBuildContext;
   static List<Function> popFunctionStack = [];
-}
+} // ova klasa sadrzi staticke metode koje se pozivaju iz svih drugih delova front-end-a
 ///________________________________________________________________________________________________
 /// Screens Navigation:
 class ScreensNavigation extends StatefulWidget {
@@ -52,7 +52,7 @@ class _ScreensNavigationState extends State<ScreensNavigation> {
           icon: Icon(Icons.person),
           label: 'Profile'
       ),
-    ];
+    ]; // ikone NavigationBar-a
     screens = [
       Navigator(
         initialRoute: '/',
@@ -67,12 +67,13 @@ class _ScreensNavigationState extends State<ScreensNavigation> {
           }
           return MaterialPageRoute<void>(builder: builder, settings: settings);
         },
-      ),
+      ), /// Home
       const Center(child: Text('search')),
       const Center(child: Text('tasks')),
       const Center(child: Text('chats')),
       const Center(child: Text('profile'))
     ];
+    /// inicijalizacija svega u klasi NavigationFunctions:
     NavigationFunctions.pushFullScreen = (screen) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
       NavigationFunctions.popFunctionStack.add(() => Navigator.pop(context));
@@ -86,8 +87,6 @@ class _ScreensNavigationState extends State<ScreensNavigation> {
 
   @override
   Widget build(BuildContext context) {
-
-    AppBar? appBar;
     BottomNavigationBar? navBar = BottomNavigationBar(
       items: navBarItems,
       currentIndex: activeIndex,
@@ -100,15 +99,14 @@ class _ScreensNavigationState extends State<ScreensNavigation> {
       unselectedItemColor: Colors.white70,
       showUnselectedLabels: false,
       showSelectedLabels: false,
-    );
+    ); // NavigationBar sa svim osobinama
 
     return Scaffold(
       body: IndexedStack(
         index: activeIndex,
         children: screens
-      ),
-      bottomNavigationBar: navBar,
-      appBar: appBar
+      ), /// IndexedStack se koristi za glavnu navigaciju
+      bottomNavigationBar: navBar
     );
   }
 }
