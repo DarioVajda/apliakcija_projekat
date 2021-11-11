@@ -4,9 +4,8 @@ import 'package:aplikacija_projekat/back_end/home_screen/home_screen_be.dart';
 import 'package:aplikacija_projekat/front_end/universal_widgets/popup_options.dart';
 import 'package:aplikacija_projekat/back_end/universal_functions/follow.dart';
 import 'package:aplikacija_projekat/front_end/home_screen/task_detail_screen.dart';
+import 'package:aplikacija_projekat/front_end/universal_widgets/profile_screen.dart';
 
-///__________________________________________________________________________________
-/// Single task widget
 class SingleTask extends StatelessWidget {
 
   final TaskData data;
@@ -30,20 +29,6 @@ class SingleTask extends StatelessWidget {
     showPopupOptions(context, popupButtons);
   }
 
-  // funkcija koja prikazuje neki string full screen
-  // ovo ce trebati da se promeni kad budem menjao te screen-ove
-  void _fullScreenPrimer(String s, BuildContext context) {
-    NavigationFunctions.pushScreen(
-      Scaffold(
-        appBar: AppBar(title: Text(s)),
-        body: Center(
-          child: Text(s)
-        ),
-      ),
-      context
-    );
-  }
-
   SingleTask({Key? key, required this.data}) : super(key: key);
 
   @override
@@ -53,10 +38,7 @@ class SingleTask extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
       child: GestureDetector(
         onTap: () {
-          // otvara se profil osobe
-          // _fullScreenPrimer('Detail Screen');
           NavigationFunctions.pushFullScreen(TaskDetailScreen(data: data));
-          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => TaskDetailScreen(data: data)));
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -68,8 +50,9 @@ class SingleTask extends StatelessWidget {
                 children: [
                   GestureDetector(
                       onTap: () {
-                        // otvara se detail screen ovog zadatka
-                        _fullScreenPrimer('Profile', context);
+                        // prikazuje se profil osobe koja je postavila ovaj zadatak
+                        pushProfileScreen(context);
+                        // _fullScreenPrimer('Profile', context); - obrisati ovo
                       },
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

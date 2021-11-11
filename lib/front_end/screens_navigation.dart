@@ -7,6 +7,7 @@ class NavigationFunctions {
   static void Function(Widget screen) pushFullScreen = (screen) {};
   static void Function(Widget screen, BuildContext context) pushScreen = (screen, context) {};
   static void Function() popFullScreen = () {};
+  static void Function(int screenIndex) gotoScreen = (screenIndex) {};
   static BuildContext? globalBuildContext;
   static List<Function> popFunctionStack = [];
 } // ova klasa sadrzi staticke metode koje se pozivaju iz svih drugih delova front-end-a
@@ -24,13 +25,15 @@ class _ScreensNavigationState extends State<ScreensNavigation> {
   List<BottomNavigationBarItem> navBarItems = [];
   List<Widget> screens = [];
   int activeIndex = 0;
-  int pageIndex = 0;
 
   @override
   void initState() {
     super.initState();
 
     activeIndex = 0;
+
+    /// NavigationFunctions class initialization:
+    /// region navBarItems = [...]
     navBarItems = [
       const BottomNavigationBarItem(
           icon: Icon(Icons.home),
@@ -52,7 +55,9 @@ class _ScreensNavigationState extends State<ScreensNavigation> {
           icon: Icon(Icons.person),
           label: 'Profile'
       ),
-    ]; // ikone NavigationBar-a
+    ];
+    /// endregion
+    /// region screens = [...]
     screens = [
       Navigator(
         initialRoute: '/',
@@ -69,20 +74,57 @@ class _ScreensNavigationState extends State<ScreensNavigation> {
         },
       ), /// Home
       const Center(child: Text('search')),
-      const Center(child: Text('tasks')),
+      Navigator(
+        initialRoute: '/',
+        onGenerateRoute: (RouteSettings settings) {
+          WidgetBuilder builder;
+          switch(settings.name) {
+            case '/':
+              builder = (BuildContext context) => const Center(child: Text('tasks'));
+              break;
+            default:
+              builder = (BuildContext context) => Container();
+          }
+          return MaterialPageRoute<void>(builder: builder, settings: settings);
+        },
+      ),
       const Center(child: Text('chats')),
       const Center(child: Text('profile'))
     ];
-    /// inicijalizacija svega u klasi NavigationFunctions:
+    /// endregion
+    /// region pushFullScreen = ...
     NavigationFunctions.pushFullScreen = (screen) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
       NavigationFunctions.popFunctionStack.add(() => Navigator.pop(context));
     };
+    /// endregion
+    /// region pushScreen = ...
     NavigationFunctions.pushScreen = (screen, localContext) {
       Navigator.push(localContext, MaterialPageRoute(builder: (contex) => screen));
       NavigationFunctions.popFunctionStack.add(() => Navigator.pop(localContext));
     };
+    /// endregion
+    /// region globalBuildContext = context
     NavigationFunctions.globalBuildContext = context;
+    /// endregion
+    /// region List<Function> gotoFunctions = [...]
+    List<Function> gotoFunctions = List.generate(
+      screens.length,
+      (index) => () {
+        setState(() {
+          activeIndex = index;
+        });
+      },
+    );
+    /// endregion
+    /// region gotoScreen = ...
+    NavigationFunctions.gotoScreen = (newScreenIndex) {
+      int startIndex= activeIndex;
+      NavigationFunctions.popFunctionStack.remove(gotoFunctions[newScreenIndex]);
+      NavigationFunctions.popFunctionStack.add(gotoFunctions[startIndex]);
+      setState(() => gotoFunctions[newScreenIndex].call());
+    };
+    /// endregion
   } // Inicijalizuju se navBarItems i screens
 
   @override
@@ -90,9 +132,7 @@ class _ScreensNavigationState extends State<ScreensNavigation> {
     BottomNavigationBar? navBar = BottomNavigationBar(
       items: navBarItems,
       currentIndex: activeIndex,
-      onTap: (tappedIndex) => setState(() {
-        activeIndex = tappedIndex;
-      }),
+      onTap: (tappedIndex) => NavigationFunctions.gotoScreen(tappedIndex),
       backgroundColor: Colors.blue,
       type: BottomNavigationBarType.fixed,
       selectedItemColor: Colors.white,
