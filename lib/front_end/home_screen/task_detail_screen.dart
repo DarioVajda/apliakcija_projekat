@@ -191,11 +191,12 @@ class _ConfirmationWidgetState extends State<ConfirmationWidget> {
                   )
                 ),
                 ElevatedButton(
-                  onPressed: () async {
-                    /// TODO navigate-uje do todo-liste i ispise nesto na ekran
-                    NavigationFunctions.popFunctionStack[NavigationFunctions.popFunctionStack.length - 1].call();
-                    NavigationFunctions.popFunctionStack[NavigationFunctions.popFunctionStack.length - 1].call();
+                  onPressed: () {
+                    /// TODO - navigate-uje do todo-liste i ispise nesto na ekran
+                    NavigationFunctions.popFunctionStack.last.call();
+                    NavigationFunctions.popFunctionStack.last.call();
                     NavigationFunctions.gotoScreen(2);
+                    NavigationFunctions.tasksScreen.acceptedTaskAction(widget.data);
                   },
                   child: Text('Send offer to ${widget.data.username}'),
                   style: ButtonStyle(shadowColor: MaterialStateProperty.all<Color>(Colors.transparent))

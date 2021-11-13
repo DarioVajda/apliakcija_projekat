@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_screen/home_screen.dart';
+import 'tasks_screen/tasks_screen.dart';
 
 ///________________________________________________________________________________________________
 /// Screen Pushing Funkcions:
@@ -10,6 +11,89 @@ class NavigationFunctions {
   static void Function(int screenIndex) gotoScreen = (screenIndex) {};
   static BuildContext? globalBuildContext;
   static List<Function> popFunctionStack = [];
+  /// region navBarItems = [...]
+  static List<BottomNavigationBarItem> navBarItems = [
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      label: 'Home'
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.search_rounded),
+      label: 'Feed'
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.list),
+      label: 'Tasks'
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.message),
+      label: 'Chats'
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.person),
+      label: 'Profile'
+    ),
+  ];
+  /// endregion
+  /// region screens = [...]
+  static Widget homeScreen = Navigator(
+    initialRoute: '/',
+    onGenerateRoute: (RouteSettings settings) {
+      WidgetBuilder builder;
+      switch(settings.name) {
+        case '/':
+          builder = (BuildContext context) => const HomeScreen();
+          break;
+        default:
+          builder = (BuildContext context) => Container();
+      }
+      return MaterialPageRoute<void>(builder: builder, settings: settings);
+    },
+  );
+  static Widget searchScreen = Navigator(
+    initialRoute: '/',
+    onGenerateRoute: (RouteSettings settings) {
+      WidgetBuilder builder;
+      switch(settings.name) {
+        case '/':
+          builder = (BuildContext context) => const Center(child: Text('search'));
+          break;
+        default:
+          builder = (BuildContext context) => Container();
+      }
+      return MaterialPageRoute<void>(builder: builder, settings: settings);
+    },
+  );
+  static TasksScreenNavigator tasksScreen = const TasksScreenNavigator();
+  static Widget chatsScreen = Navigator(
+    initialRoute: '/',
+    onGenerateRoute: (RouteSettings settings) {
+      WidgetBuilder builder;
+      switch(settings.name) {
+        case '/':
+          builder = (BuildContext context) => const Center(child: Text('chats'));
+          break;
+        default:
+          builder = (BuildContext context) => Container();
+      }
+      return MaterialPageRoute<void>(builder: builder, settings: settings);
+    },
+  );
+  static Widget profileScreen = Navigator(
+    initialRoute: '/',
+    onGenerateRoute: (RouteSettings settings) {
+      WidgetBuilder builder;
+      switch(settings.name) {
+        case '/':
+          builder = (BuildContext context) => const Center(child: Text('profile'));
+          break;
+        default:
+          builder = (BuildContext context) => Container();
+      }
+      return MaterialPageRoute<void>(builder: builder, settings: settings);
+    },
+  );
+  /// endregion
 } // ova klasa sadrzi staticke metode koje se pozivaju iz svih drugih delova front-end-a
 ///________________________________________________________________________________________________
 /// Screens Navigation:
@@ -22,8 +106,6 @@ class ScreensNavigation extends StatefulWidget {
 
 class _ScreensNavigationState extends State<ScreensNavigation> {
 
-  List<BottomNavigationBarItem> navBarItems = [];
-  List<Widget> screens = [];
   int activeIndex = 0;
 
   @override
@@ -33,65 +115,6 @@ class _ScreensNavigationState extends State<ScreensNavigation> {
     activeIndex = 0;
 
     /// NavigationFunctions class initialization:
-    /// region navBarItems = [...]
-    navBarItems = [
-      const BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home'
-      ),
-      const BottomNavigationBarItem(
-          icon: Icon(Icons.search_rounded),
-          label: 'Feed'
-      ),
-      const BottomNavigationBarItem(
-          icon: Icon(Icons.list),
-          label: 'Tasks'
-      ),
-      const BottomNavigationBarItem(
-          icon: Icon(Icons.message),
-          label: 'Chats'
-      ),
-      const BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile'
-      ),
-    ];
-    /// endregion
-    /// region screens = [...]
-    screens = [
-      Navigator(
-        initialRoute: '/',
-        onGenerateRoute: (RouteSettings settings) {
-          WidgetBuilder builder;
-          switch(settings.name) {
-            case '/':
-              builder = (BuildContext context) => const HomeScreen();
-              break;
-            default:
-              builder = (BuildContext context) => Container();
-          }
-          return MaterialPageRoute<void>(builder: builder, settings: settings);
-        },
-      ), /// Home
-      const Center(child: Text('search')),
-      Navigator(
-        initialRoute: '/',
-        onGenerateRoute: (RouteSettings settings) {
-          WidgetBuilder builder;
-          switch(settings.name) {
-            case '/':
-              builder = (BuildContext context) => const Center(child: Text('tasks'));
-              break;
-            default:
-              builder = (BuildContext context) => Container();
-          }
-          return MaterialPageRoute<void>(builder: builder, settings: settings);
-        },
-      ),
-      const Center(child: Text('chats')),
-      const Center(child: Text('profile'))
-    ];
-    /// endregion
     /// region pushFullScreen = ...
     NavigationFunctions.pushFullScreen = (screen) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
@@ -109,7 +132,7 @@ class _ScreensNavigationState extends State<ScreensNavigation> {
     /// endregion
     /// region List<Function> gotoFunctions = [...]
     List<Function> gotoFunctions = List.generate(
-      screens.length,
+      5, // number of screens
       (index) => () {
         setState(() {
           activeIndex = index;
@@ -130,7 +153,7 @@ class _ScreensNavigationState extends State<ScreensNavigation> {
   @override
   Widget build(BuildContext context) {
     BottomNavigationBar? navBar = BottomNavigationBar(
-      items: navBarItems,
+      items: NavigationFunctions.navBarItems,
       currentIndex: activeIndex,
       onTap: (tappedIndex) => NavigationFunctions.gotoScreen(tappedIndex),
       backgroundColor: Colors.blue,
@@ -144,7 +167,13 @@ class _ScreensNavigationState extends State<ScreensNavigation> {
     return Scaffold(
       body: IndexedStack(
         index: activeIndex,
-        children: screens
+        children: [
+          NavigationFunctions.homeScreen,
+          NavigationFunctions.searchScreen,
+          NavigationFunctions.tasksScreen,
+          NavigationFunctions.chatsScreen,
+          NavigationFunctions.profileScreen
+        ]
       ), /// IndexedStack se koristi za glavnu navigaciju
       bottomNavigationBar: navBar
     );
