@@ -1,4 +1,4 @@
-# aplikacija_projekat
+# homework_help_app
 
 Plan aplikacije: https://docs.google.com/document/d/1bv2Me5D10o2wBGqegIEB07QQNcqNI43GHYaRJQmIrkk/edit
 
