@@ -1,7 +1,7 @@
-# homework_help_app
+# Homework Help App
 
-Plan aplikacije: https://docs.google.com/document/d/1bv2Me5D10o2wBGqegIEB07QQNcqNI43GHYaRJQmIrkk/edit
+This is a half finished project.
 
-Stvari koje trebam da uradim:
-- smisliti da li backend i frontend trebaju da budu jedna aplikacija
-- osim toga trebam da napravim aplikaciju :)
+The App is supposed to connect students all around the world, allowing them to publish their homeworks/projects and ask for help. Anyone could fulfill their request and get paid for doing the job.
+
+Here was the internal plan: https://docs.google.com/document/d/1bv2Me5D10o2wBGqegIEB07QQNcqNI43GHYaRJQmIrkk/edit
